@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, FiltersViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var businesses: [Business]!
@@ -27,17 +27,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
 
 
-        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            self.filteredBusinesses = businesses
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-            self.tableView.reloadData()
-        })
-//
-//        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+//        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
 //            self.businesses = businesses
 //            self.filteredBusinesses = businesses
 //            for business in businesses {
@@ -45,8 +35,18 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //                print(business.address!)
 //            }
 //            self.tableView.reloadData()
-//
-//        }
+//        })
+
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+            self.businesses = businesses
+            self.filteredBusinesses = businesses
+            for business in businesses {
+                print(business.name!)
+                print(business.address!)
+            }
+            self.tableView.reloadData()
+
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,6 +70,9 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
     
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -91,15 +94,26 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.reloadData()
     }
     
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+        
+        let categories = filters["categories"] as? [String]
+        let deals = filters["deals"] as? Bool
+        
+        Business.searchWithTerm("Restaurants", sort: nil, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
+            print("searched with Term")
+            print(businesses)
+            self.filteredBusinesses = businesses
+            self.tableView.reloadData()
+        }
+    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+       // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-    */
-
+        let navigationController = segue.destinationViewController as! UINavigationController
+        let filtersViewController = navigationController.topViewController as! FiltersViewController
+        
+        filtersViewController.delegate = self
+}
 }
