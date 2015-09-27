@@ -23,7 +23,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         let searchBar = UISearchBar()
         self.navigationItem.titleView = searchBar
-        searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = false
         searchBar.delegate = self
 
 //
@@ -37,7 +37,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //            self.tableView.reloadData()
 //        })
 
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, radius: nil) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: nil) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.filteredBusinesses = businesses
             for business in businesses {
@@ -77,15 +77,26 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
+    }
+    
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        searchBar.showsCancelButton = true
+        return true
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
         searchBar.endEditing(true)
+        filteredBusinesses = businesses
+        tableView.reloadData()
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        print("text changed")
         if searchText.isEmpty {
             searchBar.endEditing(true)
+            searchBar.showsCancelButton = false
         }
         filteredBusinesses = searchText.isEmpty ? businesses : businesses.filter({(dataString: Business) -> Bool in
             return dataString.name!.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
