@@ -1,5 +1,4 @@
-## Yelp
-
+## Yelp 
 This is a Yelp search app using the [Yelp API](http://developer.rottentomatoes.com/docs/read/JSON).
 
 Time spent: `10`
@@ -31,7 +30,7 @@ Time spent: `10`
 
 ### Walkthrough
 
-![Video Walkthrough]('basic.gif')
+![Video Walkthrough](basic.gif)
 
 
 
