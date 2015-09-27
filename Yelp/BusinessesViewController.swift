@@ -37,7 +37,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //            self.tableView.reloadData()
 //        })
 
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, radius: nil) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.filteredBusinesses = businesses
             for business in businesses {
@@ -71,9 +71,9 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
@@ -98,10 +98,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as? Bool
+        let radius = filters["radius"] as? Int
+        let sort = filters["sort"] as? YelpSortMode
         
-        Business.searchWithTerm("Restaurants", sort: nil, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
-            print("searched with Term")
-            print(businesses)
+        Business.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, radius: radius) { (businesses: [Business]!, error: NSError!) -> Void in
             self.filteredBusinesses = businesses
             self.tableView.reloadData()
         }

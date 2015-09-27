@@ -10,8 +10,10 @@ import UIKit
 
 class DropdownCell: UITableViewCell {
 
+    @IBOutlet weak var dropdownLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = UITableViewCellSelectionStyle.Default
         // Initialization code
     }
 
