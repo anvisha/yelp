@@ -99,7 +99,15 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as? Bool
         let radius = filters["radius"] as? Int
-        let sort = filters["sort"] as? YelpSortMode
+        var sort : YelpSortMode?
+        let sortState = filters["sort"] as! Int
+        switch(sortState){
+            case 1:
+                sort = YelpSortMode.Distance
+            case 2:
+                sort = YelpSortMode.HighestRated
+            default: break
+        }
         
         Business.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, radius: radius) { (businesses: [Business]!, error: NSError!) -> Void in
             self.filteredBusinesses = businesses

@@ -20,10 +20,12 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     var dealState = false
     var switchStates = [Int:Bool]()
     var sortState = 0
+    var sortExpanded = false
+    let sortValues = ["Best Match", "Distance", "Highest Rated"]
     var distanceState = 0 //[0.3, 1, 5,
     var distanceExpanded = false
     let distances = ["Auto", "0.3 miles", "1 mile", "5 miles", "20 miles"]
-    let distancesAbsolute = [0, 0.3*1609.34, 1*1609.34, 5*1609.34, 20*1609.34]
+    let distanceValues = [0, 0.3*1609.34, 1*1609.34, 5*1609.34, 20*1609.34]
     weak var delegate: FiltersViewControllerDelegate?
         
     override func viewDidLoad() {
@@ -46,8 +48,9 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             filters["categories"] = selectedCategories
         }
         filters["deals"] = dealState
-        filters["radius"] = distancesAbsolute[distanceState]
-        filters["sort"] = sortState != 0 ? sortState : nil
+        print(sortState)
+        filters["radius"] = distanceValues[distanceState]
+        filters["sort"] = sortState
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
     }
 
@@ -66,7 +69,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             case 1:
                 return distanceExpanded ? 5 : 1
             case 2:
-                return 1
+                print(sortExpanded)
+                return sortExpanded ? 3 : 1
             case 3:
                 return categories.count
             default:
@@ -89,6 +93,12 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             let cell = filtersTableView.dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! DropdownCell
             let distanceIndex = distanceExpanded ? indexPath.row : distanceState
             cell.dropdownLabel.text = distances[distanceIndex]
+            return cell
+        
+        case 2:
+            let cell = filtersTableView.dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! DropdownCell
+            let sortIndex = sortExpanded ? indexPath.row : sortState
+            cell.dropdownLabel.text = sortValues[sortIndex]
             return cell
             
         default:
@@ -125,12 +135,38 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
-            distanceState = indexPath.row
-            print(distanceState)
-            expandDistanceCell()
-        } else if indexPath.section == 2 {
+        switch(indexPath.section){
+            case 1:
+                distanceState = indexPath.row
+                expandDistanceCell()
+            case 2:
+                sortState = indexPath.row
+                expandSortCell()
+            default:
+                filtersTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            
         }
+    }
+    
+    func expandSortCell() {
+        var indexPaths = [NSIndexPath]()
+        for i in  1...2 {
+            indexPaths.append(NSIndexPath(forRow: i, inSection: 2))
+        }
+        if sortExpanded == true {
+            sortExpanded = false
+            filtersTableView.beginUpdates()
+            filtersTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
+            filtersTableView.endUpdates()
+        }
+        else {
+            sortExpanded = true
+            filtersTableView.beginUpdates()
+            filtersTableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
+            filtersTableView.endUpdates()
+        }
+        filtersTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Fade)
+
     }
     
     func expandDistanceCell() {
