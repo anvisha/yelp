@@ -16,11 +16,14 @@
 		222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A7C19CCFAE000D2DB53 /* YelpClient.swift */; };
 		22AAAA991AEA0A9700A544AF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA981AEA0A9700A544AF /* Business.swift */; };
 		22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */; };
+		DE206F5F1BB86625006F92FB /* check_view.png in Resources */ = {isa = PBXBuildFile; fileRef = DE206F5D1BB86625006F92FB /* check_view.png */; settings = {ASSET_TAGS = (); }; };
+		DE206F601BB86625006F92FB /* circle_view.png in Resources */ = {isa = PBXBuildFile; fileRef = DE206F5E1BB86625006F92FB /* circle_view.png */; settings = {ASSET_TAGS = (); }; };
 		DE2C4C801BB11CED006A52A6 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2C4C7F1BB11CED006A52A6 /* BusinessCell.swift */; settings = {ASSET_TAGS = (); }; };
 		DE2EF2DC1BB7826900A149D2 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2EF2DB1BB7826900A149D2 /* SwitchCell.swift */; settings = {ASSET_TAGS = (); }; };
 		DE2EF2DE1BB783ED00A149D2 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2EF2DD1BB783ED00A149D2 /* FiltersViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		DE2EF2E01BB7B97700A149D2 /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2EF2DF1BB7B97700A149D2 /* Categories.swift */; settings = {ASSET_TAGS = (); }; };
 		DE2EF2E21BB7CDE800A149D2 /* DropdownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2EF2E11BB7CDE800A149D2 /* DropdownCell.swift */; settings = {ASSET_TAGS = (); }; };
+		DE71A91F1BB8645900310EF4 /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DE71A91E1BB8645900310EF4 /* down_arrow.png */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,11 +53,14 @@
 		97D8B2E3FFD1AF4F4A707E47 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		BBD540129B10DFE60E8C24E2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		C56EF0CE844A4EE5819C72AF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE206F5D1BB86625006F92FB /* check_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_view.png; sourceTree = SOURCE_ROOT; };
+		DE206F5E1BB86625006F92FB /* circle_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_view.png; sourceTree = SOURCE_ROOT; };
 		DE2C4C7F1BB11CED006A52A6 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
 		DE2EF2DB1BB7826900A149D2 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		DE2EF2DD1BB783ED00A149D2 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		DE2EF2DF1BB7B97700A149D2 /* Categories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 		DE2EF2E11BB7CDE800A149D2 /* DropdownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownCell.swift; sourceTree = "<group>"; };
+		DE71A91E1BB8645900310EF4 /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,9 @@
 				222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */,
 				222D8A5E19CCF9F900D2DB53 /* Main.storyboard */,
 				222D8A6119CCF9F900D2DB53 /* Images.xcassets */,
+				DE206F5D1BB86625006F92FB /* check_view.png */,
+				DE206F5E1BB86625006F92FB /* circle_view.png */,
+				DE71A91E1BB8645900310EF4 /* down_arrow.png */,
 				222D8A6319CCF9F900D2DB53 /* LaunchScreen.xib */,
 				222D8A5819CCF9F900D2DB53 /* Supporting Files */,
 				222D8A7E19CCFAEF00D2DB53 /* Yelp-Bridging-Header.h */,
@@ -276,8 +285,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */,
+				DE206F5F1BB86625006F92FB /* check_view.png in Resources */,
 				222D8A6519CCF9F900D2DB53 /* LaunchScreen.xib in Resources */,
 				222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */,
+				DE206F601BB86625006F92FB /* circle_view.png in Resources */,
+				DE71A91F1BB8645900310EF4 /* down_arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

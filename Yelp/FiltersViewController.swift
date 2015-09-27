@@ -92,13 +92,27 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         case 1:
             let cell = filtersTableView.dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! DropdownCell
             let distanceIndex = distanceExpanded ? indexPath.row : distanceState
+            var imagePath = "down_arrow.png"
+            if distanceExpanded == true {
+                imagePath = (distanceIndex == distanceState) ? "check_view.png" : "circle_view.png"
+            }
+            
             cell.dropdownLabel.text = distances[distanceIndex]
+            cell.dropdownImageView.image = UIImage(named: imagePath)
+
             return cell
         
         case 2:
             let cell = filtersTableView.dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath) as! DropdownCell
             let sortIndex = sortExpanded ? indexPath.row : sortState
+            var imagePath = "down_arrow.png"
+            if sortExpanded == true {
+                imagePath = (sortIndex == sortState) ? "check_view.png" : "circle_view.png"
+            }
+            
+            
             cell.dropdownLabel.text = sortValues[sortIndex]
+            cell.dropdownImageView.image = UIImage(named: imagePath)
             return cell
             
         default:
@@ -137,23 +151,22 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(indexPath.section){
             case 1:
-                distanceState = indexPath.row
-                expandDistanceCell()
+                expandDistanceCell(indexPath)
             case 2:
-                sortState = indexPath.row
-                expandSortCell()
+                expandSortCell(indexPath)
             default:
                 filtersTableView.deselectRowAtIndexPath(indexPath, animated: true)
             
         }
     }
     
-    func expandSortCell() {
+    func expandSortCell(indexPath: NSIndexPath) {
         var indexPaths = [NSIndexPath]()
         for i in  1...2 {
             indexPaths.append(NSIndexPath(forRow: i, inSection: 2))
         }
         if sortExpanded == true {
+            sortState = indexPath.row
             sortExpanded = false
             filtersTableView.beginUpdates()
             filtersTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
@@ -169,12 +182,13 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 
     }
     
-    func expandDistanceCell() {
+    func expandDistanceCell(indexPath: NSIndexPath) {
         var indexPaths = [NSIndexPath]()
         for i in  1...4 {
             indexPaths.append(NSIndexPath(forRow: i, inSection: 1))
         }
         if distanceExpanded == true {
+            distanceState = indexPath.row
             distanceExpanded = false
             filtersTableView.beginUpdates()
             filtersTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)

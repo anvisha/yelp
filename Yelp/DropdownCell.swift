@@ -10,6 +10,7 @@ import UIKit
 
 class DropdownCell: UITableViewCell {
 
+    @IBOutlet weak var dropdownImageView: UIImageView!
     @IBOutlet weak var dropdownLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
