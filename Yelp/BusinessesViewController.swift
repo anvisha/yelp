@@ -87,17 +87,17 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
                 print(tableLoaded)
                 tableLoaded = false
                 Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: nil, offset: offset + 20) { (businesses: [Business]!, error: NSError!) -> Void in
-                    self.businesses.appendContentsOf(businesses)
-                    self.filteredBusinesses.appendContentsOf(businesses)
-                    print(businesses.count)
-    //                if businesses != nil {
-    //                    for business in businesses {
-    //                        print(business.name!)
-    //                        print(business.address!)
-    //                    }}
-                    self.tableView.reloadData()
-                    self.offset += 20
-                    self.tableLoaded = true
+                    if businesses != nil {
+                        self.businesses.appendContentsOf(businesses)
+                        self.filteredBusinesses.appendContentsOf(businesses)
+                        print(businesses.count)
+        //                if businesses != nil {
+        //                    for business in businesses {
+        //                        print(business.name!)
+        //                        print(business.address!)
+        //                    }}
+                        self.tableView.reloadData()
+                    }
                 }
             }
         }
@@ -157,6 +157,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             self.businesses = businesses
             self.filteredBusinesses = businesses
             self.tableView.reloadData()
+            self.tableLoaded = true
         }
     }
 
