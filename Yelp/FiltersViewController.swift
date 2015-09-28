@@ -17,6 +17,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 
     @IBOutlet weak var filtersTableView: UITableView!
     var categories: [[String:String]]!
+    var categoriesExpanded = false
     var dealState = false
     var switchStates = [Int:Bool]()
     var sortState = 0
@@ -26,6 +27,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     var distanceExpanded = false
     let distances = ["Auto", "0.3 miles", "1 mile", "5 miles", "20 miles"]
     let distanceValues = [0, 0.3*1609.34, 1*1609.34, 5*1609.34, 20*1609.34]
+    
     weak var delegate: FiltersViewControllerDelegate?
         
     override func viewDidLoad() {
@@ -72,7 +74,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 print(sortExpanded)
                 return sortExpanded ? 3 : 1
             case 3:
-                return categories.count
+                return categoriesExpanded ? categories.count : 4
             default:
                 return 0
         
@@ -113,17 +115,28 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             
             cell.dropdownLabel.text = sortValues[sortIndex]
             cell.dropdownImageView.image = UIImage(named: imagePath)
+            cell.dropdownImageView.sizeToFit()
             return cell
             
+        case 3:
+            if categoriesExpanded == false && indexPath.row == 3 {
+                let cell = filtersTableView.dequeueReusableCellWithIdentifier("ExpandCategoriesCell", forIndexPath: indexPath) 
+                return cell
+            } else {
+                let cell = filtersTableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+                
+                cell.switchLabel.text = categories[indexPath.row]["name"]
+                cell.delegate = self
+                cell.onSwitch.on = switchStates[indexPath.row] ?? false
+                return cell
+            }
+        
         default:
-            let cell = filtersTableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
-            
-            cell.switchLabel.text = categories[indexPath.row]["name"]
-            cell.delegate = self
-            cell.onSwitch.on = switchStates[indexPath.row] ?? false
+            let cell = filtersTableView.dequeueReusableCellWithIdentifier("DropdownCell", forIndexPath: indexPath)
             return cell
-        }
-    }
+            
+        }}
+    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 4
@@ -155,6 +168,9 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             case 2:
                 expandSortCell(indexPath)
             default:
+                if categoriesExpanded == false && indexPath.row == 3 {
+                    expandCategoriesCell()
+                }
                 filtersTableView.deselectRowAtIndexPath(indexPath, animated: true)
             
         }
@@ -167,6 +183,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         if sortExpanded == true {
             sortState = indexPath.row
+            UIView.animateWithDuration(NSTimeInterval(400), animations: {
+                self.filtersTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)})
             sortExpanded = false
             filtersTableView.beginUpdates()
             filtersTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
@@ -201,6 +219,18 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             filtersTableView.endUpdates()
         }
         filtersTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    func expandCategoriesCell(){
+        categoriesExpanded = true
+        filtersTableView.beginUpdates()
+        filtersTableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: 3, inSection: 3)], withRowAnimation: UITableViewRowAnimation.Bottom)
+        var indexPaths = [NSIndexPath]()
+        for i in 3...(categories.count - 1) {
+            indexPaths.append(NSIndexPath(forRow: i, inSection: 3))
+        }
+        filtersTableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
+        filtersTableView.endUpdates()
     }
 
     func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {

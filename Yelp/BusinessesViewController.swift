@@ -13,6 +13,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var tableView: UITableView!
     var businesses: [Business]!
     var filteredBusinesses: [Business]!
+    var offset = 0
+    var tableLoaded = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,15 +39,16 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //            self.tableView.reloadData()
 //        })
 
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: nil) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: nil, offset: nil) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.filteredBusinesses = businesses
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
+//            if businesses != nil {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }}
             self.tableView.reloadData()
-
+            self.tableLoaded = true
         }
     }
 
@@ -75,6 +78,37 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if tableLoaded == true {
+            let currentOffset = scrollView.contentOffset.y
+            let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+            if (maximumOffset - currentOffset) <= 10 {
+                print("added")
+                print(tableLoaded)
+                tableLoaded = false
+                Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: nil, offset: offset + 20) { (businesses: [Business]!, error: NSError!) -> Void in
+                    self.businesses.appendContentsOf(businesses)
+                    self.filteredBusinesses.appendContentsOf(businesses)
+                    print(businesses.count)
+    //                if businesses != nil {
+    //                    for business in businesses {
+    //                        print(business.name!)
+    //                        print(business.address!)
+    //                    }}
+                    self.tableView.reloadData()
+                    self.offset += 20
+                    self.tableLoaded = true
+                }
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == self.filteredBusinesses.count {
+            print ("end of list")
+        }
+    }
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
         searchBar.showsCancelButton = false
@@ -93,7 +127,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        print("text changed")
         if searchText.isEmpty {
             searchBar.endEditing(true)
             searchBar.showsCancelButton = false
@@ -120,7 +153,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             default: break
         }
         
-        Business.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, radius: radius) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: sort, categories: categories, deals: deals, radius: radius, offset: nil) { (businesses: [Business]!, error: NSError!) -> Void in
+            self.businesses = businesses
             self.filteredBusinesses = businesses
             self.tableView.reloadData()
         }
