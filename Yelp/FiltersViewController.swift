@@ -183,8 +183,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         if sortExpanded == true {
             sortState = indexPath.row
-            UIView.animateWithDuration(NSTimeInterval(400), animations: {
-                self.filtersTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)})
+//            UIView.animateWithDuration(NSTimeInterval(400), animations: {
+//                self.filtersTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)})
             sortExpanded = false
             filtersTableView.beginUpdates()
             filtersTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Bottom)
